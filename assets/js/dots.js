@@ -81,6 +81,29 @@ function init() {
     my = e.clientY - bounds.top;
     man = true;
   });
+  container.addEventListener("mousemove", function (e) {
+    bounds = container.getBoundingClientRect();
+    mx = e.clientX - bounds.left;
+    my = e.clientY - bounds.top;
+    man = true;
+  });
+
+  // Add touch event listeners for mobile devices
+  container.addEventListener("touchstart", handleTouch);
+  container.addEventListener("touchmove", handleTouch);
+  container.addEventListener("touchend", function () {
+    man = false;
+  });
+}
+
+// Handle touch events
+function handleTouch(e) {
+  e.preventDefault(); // Prevent scrolling on the page
+  var touch = e.touches[0]; // Get the first touch point
+  bounds = container.getBoundingClientRect();
+  mx = touch.clientX - bounds.left;
+  my = touch.clientY - bounds.top;
+  man = true;
 }
 
 function step() {
