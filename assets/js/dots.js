@@ -112,13 +112,6 @@ function init() {
     my = e.clientY - bounds.top;
     man = true;
   });
-
-  // Add touch event listeners for mobile devices
-  container.addEventListener("touchstart", handleTouch);
-  container.addEventListener("touchmove", handleTouch);
-  container.addEventListener("touchend", function () {
-    man = false;
-  });
 }
 
 function step() {
