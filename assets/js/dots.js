@@ -60,9 +60,34 @@ function updateCanvasSize() {
   }
 }
 
+function handleDeviceOrientation(event) {
+  var alpha = event.alpha; // Rotation around the Z-axis (0 to 360)
+  var beta = event.beta; // Front-to-back motion (180 to -180)
+  var gamma = event.gamma; // Left-to-right motion (-90 to 90)
+
+  // Normalize gamma and beta to be within 0 and 1
+  var normalizedGamma = (gamma + 90) / 180;
+  var normalizedBeta = (beta + 180) / 360;
+
+  // Update the mouse coordinates (mx and my) based on the gyroscope data
+  mx = w * normalizedGamma;
+  my = h * normalizedBeta;
+  man = true;
+}
+
 function init() {
   container = document.getElementById("container");
   canvas = document.createElement("canvas");
+
+  if (window.DeviceOrientationEvent) {
+    window.addEventListener(
+      "deviceorientation",
+      handleDeviceOrientation,
+      false
+    );
+  } else {
+    console.log("Device orientation not supported");
+  }
 
   ctx = canvas.getContext("2d");
   man = false;
@@ -94,16 +119,6 @@ function init() {
   container.addEventListener("touchend", function () {
     man = false;
   });
-}
-
-// Handle touch events
-function handleTouch(e) {
-  e.preventDefault(); // Prevent scrolling on the page
-  var touch = e.touches[0]; // Get the first touch point
-  bounds = container.getBoundingClientRect();
-  mx = touch.clientX - bounds.left;
-  my = touch.clientY - bounds.top;
-  man = true;
 }
 
 function step() {
